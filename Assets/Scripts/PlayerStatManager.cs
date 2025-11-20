@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStatManager : MonoBehaviour
 {
@@ -14,8 +15,8 @@ public class PlayerStatManager : MonoBehaviour
     public Stat attackSpeed = new Stat { statName = "Attack Speed", level = 3, baseValue = 0.75f };
 
     // Text references for labels and values
+    public Slider healthSlider;
     public TextMeshProUGUI healthValueText;
-    public TextMeshProUGUI healthLabelText;
 
     public TextMeshProUGUI armorValueText;
     public TextMeshProUGUI armorLabelText;
@@ -43,9 +44,6 @@ public class PlayerStatManager : MonoBehaviour
         Debug.Log("Player stats initialized.");
 
         // initialize labels for stats
-        if (healthLabelText != null)
-            healthLabelText.text = health.statName;
-
         if (armorLabelText != null)
             armorLabelText.text = armor.statName;
 
@@ -67,7 +65,7 @@ public class PlayerStatManager : MonoBehaviour
         if (attackSpeedLabelText != null)
             attackSpeedLabelText.text = attackSpeed.statName;
 
-        // Example: Log current valueS
+        // Example: Log current values
         Debug.Log($"Health: {health.CurrentValue}");
         Debug.Log($"Armor: {armor.CurrentValue}");
         Debug.Log($"Movement Speed: {movementSpeed.CurrentValue}");
@@ -76,6 +74,14 @@ public class PlayerStatManager : MonoBehaviour
         Debug.Log($"Attack Damage: {attackDamage.CurrentValue}");
         Debug.Log($"Attack Range: {attackRange.CurrentValue}");
         Debug.Log($"Attack Speed: {attackSpeed.CurrentValue}");
+
+        // initialize health bar
+        if (healthSlider != null)
+        {
+            healthSlider.minValue = 0;
+            healthSlider.maxValue = health.baseValue * health.level;
+            healthSlider.value = healthSlider.maxValue;
+        }
     }
 
     void Update()
@@ -89,13 +95,27 @@ public class PlayerStatManager : MonoBehaviour
         if (attackDamageValueText != null) { attackDamageValueText.text = health.CurrentValue.ToString(); }
         if (attackRangeValueText != null) { attackRangeValueText.text = health.CurrentValue.ToString(); }
         if (attackSpeedValueText != null) { attackSpeedValueText.text = health.CurrentValue.ToString(); }
+
+        if (healthSlider != null)
+            healthSlider.value = health.baseValue;
+
+        if (healthValueText != null)
+            healthValueText.text = $"{Mathf.CeilToInt(health.baseValue)} / {Mathf.CeilToInt(health.baseValue * health.level)}";
     }
 
-    // Example function
     public void TakeDamage(float damage)
     {
         float effectiveDamage = Mathf.Max(damage - armor.CurrentValue, 0);
         health.baseValue -= effectiveDamage;
-        Debug.Log($"Took damage: {effectiveDamage}, Health left: {health.baseValue}");
+        if (health.baseValue < 0) health.baseValue = 0;
+    }
+
+    public void UpdateHealthMaxValue()
+    {
+        if (healthSlider != null)
+        {
+            healthSlider.maxValue = health.baseValue * health.level;
+        }
+
     }
 }
