@@ -8,7 +8,7 @@ public class Stat
     public float baseValue;  // Base value used for calculations
 
     // The current value of the stat, dynamically calculated based on level and base value
-    public float CurrentValue
+    public float Value
     {
         get
         {

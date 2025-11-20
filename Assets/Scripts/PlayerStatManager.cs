@@ -5,7 +5,8 @@ using UnityEngine.UI;
 public class PlayerStatManager : MonoBehaviour
 {
     // define different stats as public, so they can be visible in Unity Inspector
-    public Stat health = new Stat { statName = "Health", level = 1, baseValue = 20f };
+    public Stat maxHealth = new Stat { statName = "Health", level = 1, baseValue = 20f };
+    public float currentHealth = 0;
     public Stat armor = new Stat { statName = "Armor", level = 1, baseValue = 5f };
     public Stat movementSpeed = new Stat { statName = "Movement Speed", level = 1, baseValue = 1.5f };
     public Stat sprintSpeed = new Stat { statName = "Sprint Speed", level = 1, baseValue = 2.5f };
@@ -16,7 +17,7 @@ public class PlayerStatManager : MonoBehaviour
 
     // references for values and levels to display in UI
     public Slider healthSlider;
-    public TextMeshProUGUI healthLevelText;
+    public TextMeshProUGUI healthAmountText;
     public TextMeshProUGUI armorLevelText;
     public TextMeshProUGUI movementSpeedLevelText;
     public TextMeshProUGUI sprintSpeedLevelText;
@@ -27,21 +28,29 @@ public class PlayerStatManager : MonoBehaviour
 
     void Start()
     {
-        Debug.Log("Player stats initialized.");
+        // intial test values
+        maxHealth.level = 2;
+        currentHealth = maxHealth.Value;
+        armor.level = 3;
+        movementSpeed.level = 4;
+        sprintSpeed.level = 5;
+        stamina.level = 6;
+        attackDamage.level = 7;
+        attackRange.level = 8; 
+        attackSpeed.level = 9;
 
         // initialize health bar
         if (healthSlider != null)
         {
             healthSlider.minValue = 0;
-            healthSlider.maxValue = health.baseValue * health.level;
-            healthSlider.value = healthSlider.maxValue;
+            healthSlider.maxValue = maxHealth.baseValue * maxHealth.level;
+            healthSlider.value = currentHealth;
         }
     }
 
     void Update()
     {
         // Refresh texts with current values
-        if (healthLevelText != null) { healthLevelText.text = health.level.ToString(); }
         if (armorLevelText != null) { armorLevelText.text = armor.level.ToString(); }
         if (movementSpeedLevelText != null) { movementSpeedLevelText.text = movementSpeed.level.ToString(); }
         if (sprintSpeedLevelText != null) { sprintSpeedLevelText.text = sprintSpeed.level.ToString(); }
@@ -51,25 +60,28 @@ public class PlayerStatManager : MonoBehaviour
         if (attackSpeedLevelText != null) { attackSpeedLevelText.text = attackSpeed.level.ToString(); }
 
         if (healthSlider != null)
-            healthSlider.value = health.baseValue;
+        {
+            healthSlider.maxValue = maxHealth.Value;
+            healthSlider.value = Mathf.Min(healthSlider.value, maxHealth.Value);
+        }
 
-        if (healthLevelText != null)
-            healthLevelText.text = $"{Mathf.CeilToInt(health.baseValue)} / {Mathf.CeilToInt(health.baseValue * health.level)}"; // just an example to start with
+        if (healthAmountText != null)
+            healthAmountText.text = $"{Mathf.CeilToInt(currentHealth)} / {Mathf.CeilToInt(maxHealth.Value)}"; // just an example to start with
     }
 
     public void TakeDamage(float damage)
     {
-        float effectiveDamage = Mathf.Max(damage - armor.CurrentValue, 0);
-        health.baseValue -= effectiveDamage;
-        if (health.baseValue < 0) health.baseValue = 0;
+        float effectiveDamage = Mathf.Max(damage - armor.Value, 0);
+        currentHealth -= effectiveDamage;
+        if (currentHealth < 0) currentHealth = 0;
     }
 
-    // call this function when the health level is getting updated
+    //call this function when the health level is getting updated
     public void UpdateHealthMaxValue()
     {
         if (healthSlider != null)
         {
-            healthSlider.maxValue = health.baseValue * health.level;
+            healthSlider.maxValue = maxHealth.baseValue * maxHealth.level;
         }
 
     }
