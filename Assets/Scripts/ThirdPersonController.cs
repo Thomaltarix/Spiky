@@ -1,6 +1,7 @@
 ﻿ using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
+using UnityEngine.TextCore.Text;
 #endif
 
 /* Note: animations are called via the controller for both the character and capsule using animator null checks
@@ -82,6 +83,7 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        private bool _inCombat = false;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -93,6 +95,24 @@ namespace StarterAssets
         private int _animIDJump;
         private int _animIDFreeFall;
         private int _animIDMotionSpeed;
+        private int _animIDDrawWeapon;
+        private int _animIDSheathWeapon;
+        private int _animIDAttack;
+        private bool _isAttacking = false;
+        private int _animIDMove;
+        private bool _queuedAttack = false;
+        // parameter names (kept as strings so we can check existence before using them)
+        private string _paramDrawWeapon = "drawWeapon";
+        private string _paramSheathWeapon = "sheathWeapon";
+        private string _paramAttack = "attack";
+        private string _paramMove = "move";
+        private int _combatLayerIndex = -1;
+
+        [Header("Combat")]
+        [Tooltip("Name of the animator layer used for combat animations (exact name)")]
+        public string CombatLayerName = "Combat Layer";
+        [Tooltip("Weight to apply to the combat layer when enabled")]
+        public float CombatLayerWeight = 1f;
 
 #if ENABLE_INPUT_SYSTEM
         private PlayerInput _playerInput;
@@ -143,6 +163,12 @@ namespace StarterAssets
 
             AssignAnimationIDs();
 
+            // cache combat layer index if animator exists (we won't change weight here)
+            if (_hasAnimator && _animator != null)
+            {
+                _combatLayerIndex = _animator.GetLayerIndex(CombatLayerName);
+            }
+
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
@@ -151,6 +177,63 @@ namespace StarterAssets
         private void Update()
         {
             _hasAnimator = TryGetComponent(out _animator);
+
+            // Toggle combat mode with C key (draw/sheath weapon and enable combat layer)
+            if (Input.GetKeyDown(KeyCode.C))
+            {
+                _inCombat = !_inCombat;
+                if (_hasAnimator && _animator != null)
+                {
+                    if (_inCombat)
+                    {
+                        if (AnimatorHasParameter(_paramDrawWeapon))
+                            _animator.SetTrigger(_animIDDrawWeapon);
+                        else
+                        {
+                            var ownerName = _animator != null ? _animator.gameObject.name : gameObject.name;
+                            Debug.LogWarning($"Animator parameter '{_paramDrawWeapon}' not found on '{ownerName}'");
+                        }
+                    }
+                    else
+                    {
+                        if (AnimatorHasParameter(_paramSheathWeapon))
+                            _animator.SetTrigger(_animIDSheathWeapon);
+                        else
+                        {
+                            var ownerName = _animator != null ? _animator.gameObject.name : gameObject.name;
+                            Debug.LogWarning($"Animator parameter '{_paramSheathWeapon}' not found on '{ownerName}'");
+                        }
+                    }
+
+                    // only trigger animations; do not modify layer weights here
+                }
+            }
+
+            // Handle attack input when in combat: left mouse
+            if (_inCombat && _hasAnimator && _animator != null)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    // ensure the attack parameter exists
+                    if (!AnimatorHasParameter(_paramAttack))
+                    {
+                        var ownerName = _animator != null ? _animator.gameObject.name : gameObject.name;
+                        Debug.LogWarning($"Animator parameter '{_paramAttack}' not found on '{ownerName}'");
+                    }
+                    else
+                    {
+                        if (!_isAttacking)
+                        {
+                            StartCoroutine(AttackCoroutine());
+                        }
+                        else
+                        {
+                            // queue a follow-up attack so player doesn't need perfect timing
+                            _queuedAttack = true;
+                        }
+                    }
+                }
+            }
 
             JumpAndGravity();
             GroundedCheck();
@@ -169,6 +252,20 @@ namespace StarterAssets
             _animIDJump = Animator.StringToHash("Jump");
             _animIDFreeFall = Animator.StringToHash("FreeFall");
             _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+            _animIDDrawWeapon = Animator.StringToHash("drawWeapon");
+            _animIDSheathWeapon = Animator.StringToHash("sheathWeapon");
+            _animIDAttack = Animator.StringToHash("attack");
+            _animIDMove = Animator.StringToHash("move");
+        }
+
+        private bool AnimatorHasParameter(string paramName)
+        {
+            if (_animator == null) return false;
+            foreach (var p in _animator.parameters)
+            {
+                if (p.name == paramName) return true;
+            }
+            return false;
         }
 
         private void GroundedCheck()
@@ -209,6 +306,14 @@ namespace StarterAssets
 
         private void Move()
         {
+            // If attacking, block horizontal movement input to avoid sliding or getting stuck visually.
+            if (_isAttacking)
+            {
+                // still allow gravity and vertical motion handling; skip horizontal movement.
+                _controller.Move(new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
+                return;
+            }
+
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
 
@@ -365,12 +470,125 @@ namespace StarterAssets
                 GroundedRadius);
         }
 
+        private System.Collections.IEnumerator AttackCoroutine()
+        {
+            _isAttacking = true;
+
+            // capture animator reference locally to avoid MissingReferenceExceptions
+            var animator = _animator;
+
+            // enable root motion while attacking (matches the state approach)
+            if (animator != null)
+            {
+                animator.applyRootMotion = true;
+                // fire trigger
+                animator.SetTrigger(_animIDAttack);
+            }
+            else
+            {
+                Debug.LogWarning("Attempted to attack but Animator is missing/destroyed.");
+            }
+
+            // wait a frame so animator can transition into the attack state
+            yield return null;
+
+            // try to get current clip length by scanning all layers (attack may be on Combat layer)
+            float clipLength = 0f;
+            if (animator != null)
+            {
+                int layerCount = animator.layerCount;
+                for (int li = 0; li < layerCount; li++)
+                {
+                    var clips = animator.GetCurrentAnimatorClipInfo(li);
+                    if (clips != null && clips.Length > 0)
+                    {
+                        var stateInfo = animator.GetCurrentAnimatorStateInfo(li);
+                        clipLength = clips[0].clip.length / Mathf.Max(0.0001f, stateInfo.speed);
+                        break;
+                    }
+                }
+            }
+
+            // fallback if we couldn't determine length (or animator was null)
+            if (clipLength <= 0f) clipLength = 0.6f;
+
+            yield return new WaitForSeconds(clipLength);
+
+            // If animator was destroyed while waiting, ensure we still clear attack state
+            if (_animator == null)
+            {
+                _isAttacking = false;
+                _queuedAttack = false;
+                yield break;
+            }
+
+            // signal animator to go back to movement/combat blend (use OnAttackFinished helper)
+            OnAttackFinishedInternal();
+        }
+
         private void OnFootstep(AnimationEvent animationEvent)
         {
         }
 
         private void OnLand(AnimationEvent animationEvent)
         {
+        }
+
+        // Called from animation event or internally when attack finishes
+        public void OnAttackFinished()
+        {
+            // public wrapper for animator events
+            OnAttackFinishedInternal();
+        }
+
+        private void OnAttackFinishedInternal()
+        {
+            // if player queued another attack during the animation, immediately play it
+            if (_queuedAttack)
+            {
+                _queuedAttack = false;
+                // start next attack without disabling root motion; AttackCoroutine will set root motion
+                StartCoroutine(AttackCoroutine());
+                return;
+            }
+            if (_animator != null)
+            {
+                // trigger move if parameter exists
+                if (AnimatorHasParameter(_paramMove))
+                    _animator.SetTrigger(_animIDMove);
+                else
+                {
+                    var ownerName = _animator != null ? _animator.gameObject.name : gameObject.name;
+                    Debug.LogWarning($"Animator parameter '{_paramMove}' not found on '{ownerName}'");
+                }
+
+                // disable root motion after attack
+                _animator.applyRootMotion = false;
+            }
+
+            _isAttacking = false;
+
+            // fallback: ensure animator returns to combat blend if transition didn't occur
+            ForceCombatBlendIfNeeded();
+        }
+
+        // If the animator didn't transition correctly, force the combat blend state on the combat layer
+        // This is a fallback for setups where the transition conditions are not set or the state machine is different.
+        private void ForceCombatBlendIfNeeded()
+        {
+            if (_animator == null) return;
+            if (_combatLayerIndex < 0) return;
+
+            // get current state on combat layer
+            var info = _animator.GetCurrentAnimatorStateInfo(_combatLayerIndex);
+            // if we're still in an attack-like state (heuristic: state's length > 0 and not the blend tree), force the blend
+            // Here we attempt to play a state named "Combat Blend Tree" as a safe default — adjust if your state has another name.
+            string targetStateName = "Combat Blend Tree";
+            if (!info.IsName(targetStateName))
+            {
+                Debug.Log("Forcing animator to play '" + targetStateName + "' on layer " + _combatLayerIndex);
+                _animator.Play(targetStateName, _combatLayerIndex, 0f);
+            }
         }
     }
 }
