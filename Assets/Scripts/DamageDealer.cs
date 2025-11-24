@@ -24,10 +24,19 @@ public class DamageDealer : MonoBehaviour
             int layerMask =1 << 9;
             if (Physics.Raycast(transform.position, -transform.up, out hit, weaponLength, layerMask))
             {
-                if (!hasDealtDamage.Contains(hit.transform.gameObject))
+                GameObject target = hit.transform.gameObject;
+
+                if (!hasDealtDamage.Contains(target))
                 {
                     print("damage");
-                    hasDealtDamage.Add(hit.transform.gameObject);
+                    hasDealtDamage.Add(target);
+
+                    Health hp = target.GetComponent<Health>();
+                    if (hp != null)
+                    {
+                        hp.TakeDamage(weaponDamage);
+                        Debug.Log("Damage: " + weaponDamage);
+                    }
                 }
             }
         }
