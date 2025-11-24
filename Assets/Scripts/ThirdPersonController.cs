@@ -569,26 +569,7 @@ namespace StarterAssets
             _isAttacking = false;
 
             // fallback: ensure animator returns to combat blend if transition didn't occur
-            ForceCombatBlendIfNeeded();
-        }
-
-        // If the animator didn't transition correctly, force the combat blend state on the combat layer
-        // This is a fallback for setups where the transition conditions are not set or the state machine is different.
-        private void ForceCombatBlendIfNeeded()
-        {
-            if (_animator == null) return;
-            if (_combatLayerIndex < 0) return;
-
-            // get current state on combat layer
-            var info = _animator.GetCurrentAnimatorStateInfo(_combatLayerIndex);
-            // if we're still in an attack-like state (heuristic: state's length > 0 and not the blend tree), force the blend
-            // Here we attempt to play a state named "Combat Blend Tree" as a safe default — adjust if your state has another name.
-            string targetStateName = "Combat Blend Tree";
-            if (!info.IsName(targetStateName))
-            {
-                Debug.Log("Forcing animator to play '" + targetStateName + "' on layer " + _combatLayerIndex);
-                _animator.Play(targetStateName, _combatLayerIndex, 0f);
-            }
+            //ForceCombatBlendIfNeeded();
         }
     }
 }
