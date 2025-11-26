@@ -1,4 +1,4 @@
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,38 +16,53 @@ public class PlayerStatManager : MonoBehaviour
     public float currentHealth = 0;
 
     // references for values and levels to display in UI
-    public TextMeshProUGUI healthAmountText;
-    public TextMeshProUGUI armorLevelText;
-    public TextMeshProUGUI movementSpeedLevelText;
-    public TextMeshProUGUI sprintSpeedLevelText;
-    public TextMeshProUGUI staminaLevelText;
-    public TextMeshProUGUI attackDamageLevelText;
-    public TextMeshProUGUI attackRangeLevelText;
-    public TextMeshProUGUI attackSpeedLevelText;
+    [SerializeField] private TextMeshProUGUI healthAmountText;
+    [SerializeField] private TextMeshProUGUI armorLevelText;
+    [SerializeField] private TextMeshProUGUI movementSpeedLevelText;
+    [SerializeField] private TextMeshProUGUI sprintSpeedLevelText;
+    [SerializeField] private TextMeshProUGUI staminaLevelText;
+    [SerializeField] private TextMeshProUGUI attackDamageLevelText;
+    [SerializeField] private TextMeshProUGUI attackRangeLevelText;
+    [SerializeField] private TextMeshProUGUI attackSpeedLevelText;
 
-    // reference for health slider as it's a special extra component
-    public Slider healthSlider;
+    // reference for health slider
+    [SerializeField] private Slider healthSlider;
 
-    void Start()
+    private void Awake()
     {
+        // intialize health slider
+        healthSlider = transform.Find("PlayerStats/Defense/HealthBar").GetComponent<Slider>();
+        healthAmountText = transform.Find("PlayerStats/Defense/HealthBar/HealthAmountText").GetComponent<TextMeshProUGUI>();
 
-        // initialize health bar
         currentHealth = maxHealth.Value;
 
         healthSlider.minValue = 0;
         healthSlider.maxValue = maxHealth.Value;
         healthSlider.value = currentHealth;
 
-        // initialize UI labels
-        armorLevelText.text = armor.level.ToString();
-        movementSpeedLevelText.text = movementSpeed.level.ToString();
-        sprintSpeedLevelText.text = sprintSpeed.level.ToString();
-        staminaLevelText.text = stamina.level.ToString();
-        attackDamageLevelText.text = attackDamage.level.ToString();
-        attackRangeLevelText.text = attackRange.level.ToString();
-        attackSpeedLevelText.text = attackSpeed.level.ToString();
+        RefreshTotalHealthUI();
 
-        RefreshHealthLabel();
+        // initialize UI labels
+        armorLevelText = transform.Find("PlayerStats/Defense/Armor/ArmorIcon/ArmorLevelText").GetComponent<TextMeshProUGUI>();
+        armorLevelText.text = armor.level.ToString();
+
+        movementSpeedLevelText = transform.Find("PlayerStats/Movement/MovementSpeed/MovementSpeedIcon/MovementSpeedLevelText").GetComponent<TextMeshProUGUI>();
+        movementSpeedLevelText.text = movementSpeed.level.ToString();
+
+        sprintSpeedLevelText = transform.Find("PlayerStats/Movement/SprintSpeed/SprintSpeedIcon/SprintSpeedLevelText").GetComponent<TextMeshProUGUI>();
+        sprintSpeedLevelText.text = sprintSpeed.level.ToString();
+
+        staminaLevelText = transform.Find("PlayerStats/Movement/Stamina/StaminaIcon/StaminaLevelText").GetComponent<TextMeshProUGUI>();
+        staminaLevelText.text = stamina.level.ToString();
+
+        attackDamageLevelText = transform.Find("PlayerStats/Combat/AttackDamage/AttackDamageIcon/AttackDamageLevelText").GetComponent<TextMeshProUGUI>();
+        attackDamageLevelText.text = attackDamage.level.ToString();
+
+        attackRangeLevelText = transform.Find("PlayerStats/Combat/AttackRange/AttackRangeIcon/AttackRangeLevelText").GetComponent<TextMeshProUGUI>();
+        attackRangeLevelText.text = attackRange.level.ToString();
+
+        attackSpeedLevelText = transform.Find("PlayerStats/Combat/AttackSpeed/AttackSpeedIcon/AttackSpeedLevelText").GetComponent<TextMeshProUGUI>();
+        attackSpeedLevelText.text = attackSpeed.level.ToString();
     }
 
     public void TakeDamage(float damage)
@@ -59,26 +74,28 @@ public class PlayerStatManager : MonoBehaviour
             currentHealth = 0;
             // TODO: die logic
         }
-        RefreshHealthLabel();
+        RefreshTotalHealthUI();
     }
 
-    //call this function when the health level is getting updated
-    public void UpdateHealthMaxValue()
+    // call this function when the health level is getting updated
+    private void UpdateHealthMaxValue()
     {
-        if (healthSlider != null)
-        {
-            healthSlider.maxValue = maxHealth.baseValue * maxHealth.level;
-        }
-
+        currentHealth += maxHealth.addValue;
+        healthSlider.maxValue = maxHealth.Value;
+        healthSlider.value = currentHealth;
+        RefreshTotalHealthUI();
     }
 
     public void UpdateLevel(Stat stat)
     {
         stat.level += 1;
+        if (stat.statName == "Health") { UpdateHealthMaxValue(); }
     }
 
-    public void RefreshHealthLabel()
+    private void RefreshTotalHealthUI()
     {
+        healthSlider.maxValue = maxHealth.Value;
+        healthSlider.value = currentHealth;
         healthAmountText.text = $"{Mathf.CeilToInt(currentHealth)} / {Mathf.CeilToInt(maxHealth.Value)}";
     }
 }
