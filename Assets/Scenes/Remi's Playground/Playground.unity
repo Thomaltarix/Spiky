@@ -3039,7 +3039,7 @@ RectTransform:
   - {fileID: 1587983079}
   - {fileID: 1149649976}
   - {fileID: 96026710}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 3893294199639930361}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5728,6 +5728,7 @@ Transform:
   - {fileID: 272993188152429408}
   - {fileID: 73368368}
   - {fileID: 1789371233}
+  - {fileID: 1420207386}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &3964097222371235843
@@ -6711,46 +6712,54 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth:
     statName: Health
-    level: 1
+    level: 0
     baseValue: 20
-  currentHealth: 0
+    addValue: 5
   armor:
     statName: Armor
-    level: 1
-    baseValue: 5
+    level: 0
+    baseValue: 0
+    addValue: 5
   movementSpeed:
     statName: Movement Speed
-    level: 1
-    baseValue: 1.5
+    level: 0
+    baseValue: 5
+    addValue: 0.5
   sprintSpeed:
     statName: Sprint Speed
-    level: 1
-    baseValue: 2.5
+    level: 0
+    baseValue: 8
+    addValue: 0.5
   stamina:
     statName: Stamina
-    level: 1
+    level: 0
     baseValue: 10
+    addValue: 1
   attackDamage:
     statName: Attack Damage
-    level: 1
-    baseValue: 7
+    level: 0
+    baseValue: 20
+    addValue: 5
   attackRange:
     statName: Attack Range
-    level: 1
-    baseValue: 1.2
+    level: 0
+    baseValue: 5
+    addValue: 1
   attackSpeed:
     statName: Attack Speed
-    level: 1
+    level: 0
     baseValue: 0.75
-  healthSlider: {fileID: 824197915}
-  healthAmountText: {fileID: 1720254235}
-  armorLevelText: {fileID: 1720691637}
-  movementSpeedLevelText: {fileID: 995552293}
-  sprintSpeedLevelText: {fileID: 1724272563}
-  staminaLevelText: {fileID: 1557730042}
-  attackDamageLevelText: {fileID: 150003822}
-  attackRangeLevelText: {fileID: 1316589047}
-  attackSpeedLevelText: {fileID: 1468143926}
+    addValue: 5
+  currentHealth: 0
+  healthAmountText: {fileID: 0}
+  armorLevelText: {fileID: 0}
+  movementSpeedLevelText: {fileID: 0}
+  sprintSpeedLevelText: {fileID: 0}
+  staminaLevelText: {fileID: 0}
+  attackDamageLevelText: {fileID: 0}
+  attackRangeLevelText: {fileID: 0}
+  attackSpeedLevelText: {fileID: 0}
+  healthSlider: {fileID: 0}
 --- !u!4 &6983258930626336602
 Transform:
   m_ObjectHideFlags: 0
@@ -7498,4 +7507,3 @@ SceneRoots:
   - {fileID: 2097139512}
   - {fileID: 110325002}
   - {fileID: 7288898155878186962}
-  - {fileID: 1420207386}
