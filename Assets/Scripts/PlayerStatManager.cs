@@ -5,15 +5,15 @@ using UnityEngine.UI;
 public class PlayerStatManager : MonoBehaviour
 {
     // define different stats as public, so they can be visible in Unity Inspector
-    public Stat maxHealth = new Stat { statName = "Health", level = 1, baseValue = 20f };
+    public Stat maxHealth = new Stat { statName = "Health", level = 0, baseValue = 20f, addValue = 5f };
+    public Stat armor = new Stat { statName = "Armor", level = 0, baseValue = 0f, addValue = 5f };
+    public Stat movementSpeed = new Stat { statName = "Movement Speed", level = 0, baseValue = 5f, addValue = 0.5f };
+    public Stat sprintSpeed = new Stat { statName = "Sprint Speed", level = 0, baseValue = 8f, addValue = 0.5f };
+    public Stat stamina = new Stat { statName = "Stamina", level = 0, baseValue = 10f, addValue = 1f };
+    public Stat attackDamage = new Stat { statName = "Attack Damage", level = 0, baseValue = 20f, addValue = 5f };
+    public Stat attackRange = new Stat { statName = "Attack Range", level = 0, baseValue = 5f, addValue = 1f };
+    public Stat attackSpeed = new Stat { statName = "Attack Speed", level = 0, baseValue = 0.75f, addValue = 5f };
     public float currentHealth = 0;
-    public Stat armor = new Stat { statName = "Armor", level = 1, baseValue = 5f };
-    public Stat movementSpeed = new Stat { statName = "Movement Speed", level = 1, baseValue = 1.5f };
-    public Stat sprintSpeed = new Stat { statName = "Sprint Speed", level = 1, baseValue = 2.5f };
-    public Stat stamina = new Stat { statName = "Stamina", level = 1, baseValue = 10f };
-    public Stat attackDamage = new Stat { statName = "Attack Damage", level = 1, baseValue = 7f };
-    public Stat attackRange = new Stat { statName = "Attack Range", level = 1, baseValue = 1.2f };
-    public Stat attackSpeed = new Stat { statName = "Attack Speed", level = 1, baseValue = 0.75f };
 
     // references for values and levels to display in UI
     public Slider healthSlider;
@@ -28,16 +28,17 @@ public class PlayerStatManager : MonoBehaviour
 
     void Start()
     {
+
         // intial test values
-        maxHealth.level = 2;
+        maxHealth.level = 0;
         currentHealth = maxHealth.Value;
-        armor.level = 3;
-        movementSpeed.level = 4;
-        sprintSpeed.level = 5;
-        stamina.level = 6;
-        attackDamage.level = 7;
-        attackRange.level = 8; 
-        attackSpeed.level = 9;
+        armor.level = 0;
+        movementSpeed.level = 0;
+        sprintSpeed.level = 0;
+        stamina.level = 0;
+        attackDamage.level = 0;
+        attackRange.level = 0; 
+        attackSpeed.level = 0;
 
         // initialize health bar
         if (healthSlider != null)
