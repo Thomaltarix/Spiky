@@ -68,8 +68,8 @@ public class DamageDealer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Gizmos funktionieren nur, wenn das Spiel läuft und playerStats gefunden wurde, 
-        // oder wir nutzen einen Standardwert für den Editor-Modus.
+        // Gizmos only work when the game is running and playerStats was found
+        // Use fallback value for editor here
         float debugLength = (playerStats != null) ? playerStats.attackRange.Value : 1.0f;
 
         Gizmos.color = Color.yellow;
