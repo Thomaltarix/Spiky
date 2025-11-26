@@ -16,7 +16,6 @@ public class PlayerStatManager : MonoBehaviour
     public float currentHealth = 0;
 
     // references for values and levels to display in UI
-    public Slider healthSlider;
     public TextMeshProUGUI healthAmountText;
     public TextMeshProUGUI armorLevelText;
     public TextMeshProUGUI movementSpeedLevelText;
@@ -26,55 +25,41 @@ public class PlayerStatManager : MonoBehaviour
     public TextMeshProUGUI attackRangeLevelText;
     public TextMeshProUGUI attackSpeedLevelText;
 
+    // reference for health slider as it's a special extra component
+    public Slider healthSlider;
+
     void Start()
     {
 
-        // intial test values
-        maxHealth.level = 0;
-        currentHealth = maxHealth.Value;
-        armor.level = 0;
-        movementSpeed.level = 0;
-        sprintSpeed.level = 0;
-        stamina.level = 0;
-        attackDamage.level = 0;
-        attackRange.level = 0; 
-        attackSpeed.level = 0;
-
         // initialize health bar
-        if (healthSlider != null)
-        {
-            healthSlider.minValue = 0;
-            healthSlider.maxValue = maxHealth.baseValue * maxHealth.level;
-            healthSlider.value = currentHealth;
-        }
-    }
+        currentHealth = maxHealth.Value;
 
-    void Update()
-    {
-        // Refresh texts with current values
-        if (armorLevelText != null) { armorLevelText.text = armor.level.ToString(); }
-        if (movementSpeedLevelText != null) { movementSpeedLevelText.text = movementSpeed.level.ToString(); }
-        if (sprintSpeedLevelText != null) { sprintSpeedLevelText.text = sprintSpeed.level.ToString(); }
-        if (staminaLevelText != null) { staminaLevelText.text = stamina.level.ToString(); }
-        if (attackDamageLevelText != null) { attackDamageLevelText.text = attackDamage.level.ToString(); }
-        if (attackRangeLevelText != null) { attackRangeLevelText.text = attackRange.level.ToString(); }
-        if (attackSpeedLevelText != null) { attackSpeedLevelText.text = attackSpeed.level.ToString(); }
+        healthSlider.minValue = 0;
+        healthSlider.maxValue = maxHealth.Value;
+        healthSlider.value = currentHealth;
 
-        if (healthSlider != null)
-        {
-            healthSlider.maxValue = maxHealth.Value;
-            healthSlider.value = Mathf.Min(healthSlider.value, maxHealth.Value);
-        }
+        // initialize UI labels
+        armorLevelText.text = armor.level.ToString();
+        movementSpeedLevelText.text = movementSpeed.level.ToString();
+        sprintSpeedLevelText.text = sprintSpeed.level.ToString();
+        staminaLevelText.text = stamina.level.ToString();
+        attackDamageLevelText.text = attackDamage.level.ToString();
+        attackRangeLevelText.text = attackRange.level.ToString();
+        attackSpeedLevelText.text = attackSpeed.level.ToString();
 
-        if (healthAmountText != null)
-            healthAmountText.text = $"{Mathf.CeilToInt(currentHealth)} / {Mathf.CeilToInt(maxHealth.Value)}"; // just an example to start with
+        RefreshHealthLabel();
     }
 
     public void TakeDamage(float damage)
     {
         float effectiveDamage = Mathf.Max(damage - armor.Value, 0);
         currentHealth -= effectiveDamage;
-        if (currentHealth < 0) currentHealth = 0;
+        if (currentHealth < 0)
+        {
+            currentHealth = 0;
+            // TODO: die logic
+        }
+        RefreshHealthLabel();
     }
 
     //call this function when the health level is getting updated
@@ -85,5 +70,15 @@ public class PlayerStatManager : MonoBehaviour
             healthSlider.maxValue = maxHealth.baseValue * maxHealth.level;
         }
 
+    }
+
+    public void UpdateLevel(Stat stat)
+    {
+        stat.level += 1;
+    }
+
+    public void RefreshHealthLabel()
+    {
+        healthAmountText.text = $"{Mathf.CeilToInt(currentHealth)} / {Mathf.CeilToInt(maxHealth.Value)}";
     }
 }
