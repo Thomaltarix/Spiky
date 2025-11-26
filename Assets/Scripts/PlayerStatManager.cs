@@ -86,9 +86,10 @@ public class PlayerStatManager : MonoBehaviour
         RefreshTotalHealthUI();
     }
 
-    public void UpdateLevel(Stat stat)
+    public void IncreaseLevel(Stat stat, int amount = 1)
     {
-        stat.level += 1;
+        stat.level += amount;
+        Debug.Log(stat.statName);
         if (stat.statName == "Health") { UpdateHealthMaxValue(); }
     }
 

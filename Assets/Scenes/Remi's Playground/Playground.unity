@@ -6712,7 +6712,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth:
     statName: Health
-    level: 0
+    level: 5
     baseValue: 20
     addValue: 5
   armor:

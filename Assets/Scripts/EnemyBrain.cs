@@ -36,8 +36,10 @@ public class EnemyBrain : MonoBehaviour
 
         GameObject p = GameObject.FindWithTag("Player");
         if (p != null)
+        {
             _player = p;
             _statManager = p.GetComponent<PlayerStatManager>();
+        }
     }
 
     public void OnFootstep(AnimationEvent evt)
@@ -59,7 +61,7 @@ public class EnemyBrain : MonoBehaviour
     public void PerformAttack() 
     {
         _statManager.TakeDamage(10f);
-    }
+}
 
     private void RotateTowardsPlayer()
     {
