@@ -48,7 +48,6 @@ public class DamageDealer : MonoBehaviour
                     {
                         float currentDamage = playerStats.attackDamage.Value;
                         hp.TakeDamage(currentDamage);
-                        Debug.Log($"Hit! Damage dealt: {currentDamage}, Range: {currentRange}");
                     }
                 }
             }
