@@ -521,6 +521,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3
+  _attackRange: 1
+  _attackCooldown: 1
 --- !u!195 &8260165126256944583
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -577,7 +579,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47b0ab819cd73fe45b32bcb6a76aaa64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _health: 100
+  _health: 2
   ragdollDuration: 1
   smokePrefab: {fileID: 1540664639820819098, guid: 5d48e9ca2fd7c3847aed3d2c21e852bf, type: 3}
 --- !u!136 &7772768527906509305
