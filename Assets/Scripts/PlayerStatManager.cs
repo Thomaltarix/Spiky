@@ -5,14 +5,14 @@ using UnityEngine.UI;
 public class PlayerStatManager : MonoBehaviour
 {
     // define different stats as public, so they can be visible in Unity Inspector
-    public Stat maxHealth = new Stat { statName = "Health", level = 0, baseValue = 20f, addValue = 5f };
+    public Stat maxHealth = new Stat { statName = "Health", level = 0, baseValue = 100f, addValue = 25f };
     public Stat armor = new Stat { statName = "Armor", level = 0, baseValue = 0f, addValue = 5f };
-    public Stat movementSpeed = new Stat { statName = "Movement Speed", level = 0, baseValue = 5f, addValue = 0.5f };
-    public Stat sprintSpeed = new Stat { statName = "Sprint Speed", level = 0, baseValue = 8f, addValue = 0.5f };
-    public Stat stamina = new Stat { statName = "Stamina", level = 0, baseValue = 10f, addValue = 1f };
-    public Stat attackDamage = new Stat { statName = "Attack Damage", level = 0, baseValue = 20f, addValue = 5f };
+    public Stat movementSpeed = new Stat { statName = "Movement Speed", level = 0, baseValue = 2f, addValue = 0.5f };
+    public Stat sprintSpeed = new Stat { statName = "Sprint Speed", level = 0, baseValue = 20f, addValue = 0.5f };
+    public Stat stamina = new Stat { statName = "Stamina", level = 0, baseValue = 1f, addValue = 0.2f };
+    public Stat attackDamage = new Stat { statName = "Attack Damage", level = 0, baseValue = 50f, addValue = 5f };
     public Stat attackRange = new Stat { statName = "Attack Range", level = 0, baseValue = 5f, addValue = 1f };
-    public Stat attackSpeed = new Stat { statName = "Attack Speed", level = 0, baseValue = 0.75f, addValue = 5f };
+    public Stat attackSpeed = new Stat { statName = "Attack Speed", level = 0, baseValue = 1f, addValue = 0.2f };
     public float currentHealth = 0;
 
     // references for values and levels to display in UI

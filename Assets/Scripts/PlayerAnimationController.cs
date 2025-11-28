@@ -14,6 +14,7 @@ public class PlayerAnimationController : MonoBehaviour
     private int MoveID;
     private int DrawID;
     private int SheathID;
+    private int AttackSpeedID;
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class PlayerAnimationController : MonoBehaviour
         JumpID = Animator.StringToHash("Jump");
         FreeFallID = Animator.StringToHash("FreeFall");
         AttackID = Animator.StringToHash("attack");
+        AttackSpeedID = Animator.StringToHash("AttackSpeed");
         MoveID = Animator.StringToHash("move");
         DrawID = Animator.StringToHash("drawWeapon");
         SheathID = Animator.StringToHash("sheathWeapon");
@@ -48,9 +50,10 @@ public class PlayerAnimationController : MonoBehaviour
         _anim.SetTrigger(on ? DrawID : SheathID);
     }
 
-    public void TriggerAttack()
+    public void TriggerAttack(float attackSpeed)
     {
         _anim.SetTrigger(AttackID);
+        _anim.SetFloat(AttackSpeedID, attackSpeed);
 
         // optional: find current clip length
         var clip = _anim.GetCurrentAnimatorClipInfo(0);

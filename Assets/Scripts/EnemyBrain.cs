@@ -7,9 +7,9 @@ public class EnemyBrain : MonoBehaviour
 {
     [SerializeField] private float _speed = 3f;
     [SerializeField] private float _attackRange = 1f;
-    [SerializeField] private float _attackCooldown = 1f;
+    [SerializeField] private float _attackCooldown = 2f;
 
-    private float _lastAttackTime = 0f;
+    private float _attackTimeout;
 
     private GameObject _player;
     private PlayerStatManager _statManager;
@@ -24,6 +24,8 @@ public class EnemyBrain : MonoBehaviour
 
     private void Start()
     {
+        _attackTimeout = _attackCooldown;
+
         _animator = GetComponent<Animator>();
         _animIDSpeed = Animator.StringToHash("Speed");
 
@@ -89,11 +91,12 @@ public class EnemyBrain : MonoBehaviour
         PLayMoveAnimation(_agent.velocity.magnitude);
         RotateTowardsPlayer();
 
-        if (_agent.remainingDistance <= _attackRange && Time.time >= _lastAttackTime + _attackCooldown) 
+        if (_agent.remainingDistance <= _attackRange && _attackTimeout <= 0) 
         {
             PerformAttack();
-            _lastAttackTime = Time.time;
+            _attackTimeout = _attackCooldown;
         }
+        if (_attackTimeout > 0) { _attackTimeout -= Time.deltaTime; }
         
     }
 }

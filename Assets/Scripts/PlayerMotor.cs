@@ -15,6 +15,16 @@ namespace StarterAssets
         public float FallTimeout = 0.15f;
         public float JumpTimeout = 0.5f;
 
+        [Header("Stamina Settings")]
+        public float staminaMaxMultiplier = 1f;   // multiplier basé sur la stat
+        public float staminaDrainRate = 1f;       // consommation * stat
+        public float staminaRegenRate = 1f;       // regen * stat
+        public float regenDelay = 0.8f;           // délai avant la régénération
+
+        private float stamina;
+        private float regenTimer;
+        private bool staminaLocked = false;
+
         public bool Grounded { get; private set; }
 
         public float GroundedOffset = -0.14f;
@@ -24,6 +34,7 @@ namespace StarterAssets
         private CharacterController _controller;
         private PlayerInputHandler _input;
         private PlayerAnimationController _anim;
+        private PlayerStatManager _statManager;
 
         private float _speed;
         private float _verticalVelocity;
@@ -38,6 +49,7 @@ namespace StarterAssets
 
         private void Awake()
         {
+            _statManager = GetComponent<PlayerStatManager>();
             _controller = GetComponent<CharacterController>();
             _input = GetComponent<PlayerInputHandler>();
             _anim = GetComponent<PlayerAnimationController>();
@@ -46,12 +58,16 @@ namespace StarterAssets
 
         private void Start()
         {
+            stamina = _statManager.stamina.Value * staminaMaxMultiplier;
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
         }
 
         private void Update()
         {
+            MoveSpeed = _statManager.movementSpeed.Value;
+            SprintSpeed = _statManager.sprintSpeed.Value;
+
             GroundCheck();
             ApplyGravity();
             Jump();
@@ -66,9 +82,43 @@ namespace StarterAssets
             _anim.SetGrounded(Grounded);
         }
 
+        private void HandleStamina(bool isSprinting)
+        {
+            float stat = _statManager.stamina.Value;
+            float maxStamina = stat * staminaMaxMultiplier;
+
+            if (stamina <= 0f)
+            {
+                staminaLocked = true;
+                stamina = 0f;
+            }
+
+            if (!isSprinting)
+                staminaLocked = false;
+
+            if (isSprinting && !staminaLocked)
+            {
+                stamina -= staminaDrainRate * stat * Time.deltaTime;
+                regenTimer = regenDelay;
+            }
+            else
+            {
+                if (regenTimer > 0)
+                    regenTimer -= Time.deltaTime;
+                else
+                    stamina += staminaRegenRate * stat * Time.deltaTime;
+            }
+
+            stamina = Mathf.Clamp(stamina, 0, maxStamina);
+        }
+
         private void Move()
         {
-            float targetSpeed = _input.Sprint ? SprintSpeed : MoveSpeed;
+            HandleStamina(_input.Sprint);
+            bool canSprint = _input.Sprint && stamina > 0f && !staminaLocked;
+            float targetSpeed = canSprint ? SprintSpeed : MoveSpeed;
+
+
             if (_input.Move == Vector2.zero) targetSpeed = 0;
 
             float currentHorizontalSpeed =
@@ -129,6 +179,11 @@ namespace StarterAssets
 
         private void ApplyGravity()
         {
+            if (Grounded && _verticalVelocity < 0f)
+            {
+                _verticalVelocity = -2f;
+                return;
+            }
             if (_verticalVelocity < 53f)
                 _verticalVelocity += Gravity * Time.deltaTime;
         }

@@ -6,6 +6,9 @@ public class PlayerCombatController : MonoBehaviour
 {
     private PlayerInputHandler _input;
     private PlayerAnimationController _anim;
+    private PlayerStatManager _statManager;
+
+    private float _attackCooldown = 0.8f;
 
     private float _inCombatCooldown = 0.75f;
     private float _inCombatTimeout = 0f;
@@ -18,6 +21,7 @@ public class PlayerCombatController : MonoBehaviour
 
     private void Awake()
     {
+        _statManager = GetComponent<PlayerStatManager>();
         _input = GetComponent<PlayerInputHandler>();
         _anim = GetComponent<PlayerAnimationController>();
         _inCombatTimeout = _inCombatCooldown;
@@ -63,9 +67,9 @@ public class PlayerCombatController : MonoBehaviour
     {
         _attacking = true;
         _haveAttacked = true;
-        _anim.TriggerAttack();
+        _anim.TriggerAttack(_statManager.attackSpeed.Value);
 
-        yield return new WaitForSeconds(0.8f);
+        yield return new WaitForSeconds(_attackCooldown / _statManager.attackSpeed.Value);
 
         if (_queued)
         {
