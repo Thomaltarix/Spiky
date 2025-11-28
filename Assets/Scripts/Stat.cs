@@ -5,14 +5,15 @@ public class Stat
 {
     public string statName;  // The name of the stat (e.g., Health, Armor)
     public int level;        // The current level of the stat
-    public float baseValue;  // Base value used for calculations
+    public float baseValue;       // Base value used for calculations
+    public float addValue;   // Additional value used for calculations
 
     // The current value of the stat, dynamically calculated based on level and base value
     public float Value
     {
         get
         {
-            return baseValue * level; // Example calculation, can be customized
+            return baseValue + (addValue * level); // Example calculation, can be customized
         }
     }
 

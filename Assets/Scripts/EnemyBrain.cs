@@ -12,6 +12,7 @@ public class EnemyBrain : MonoBehaviour
     private float _lastAttackTime = 0f;
 
     private GameObject _player;
+    private PlayerStatManager _statManager;
     private NavMeshAgent _agent;
     private Animator _animator;
 
@@ -35,7 +36,10 @@ public class EnemyBrain : MonoBehaviour
 
         GameObject p = GameObject.FindWithTag("Player");
         if (p != null)
+        {
             _player = p;
+            _statManager = p.GetComponent<PlayerStatManager>();
+        }
     }
 
     public void OnFootstep(AnimationEvent evt)
@@ -53,15 +57,11 @@ public class EnemyBrain : MonoBehaviour
 
 
     //TODO: maybe use the damage dealer script ? (make the damage dealer script generic can be used by both player and enemies)
+    //NOTE: use PlayerStatManager now as armor is included there
     public void PerformAttack() 
     {
-        Health playerHealth = _player.GetComponent<Health>();
-
-        if (playerHealth)
-        {
-            playerHealth.TakeDamage(10f);
-        }
-    }
+        _statManager.TakeDamage(10f);
+}
 
     private void RotateTowardsPlayer()
     {

@@ -6,36 +6,48 @@ public class DamageDealer : MonoBehaviour
     bool canDealDamage;
     List<GameObject> hasDealtDamage;
 
-    [SerializeField] float weaponLength;
-    [SerializeField] float weaponDamage;
+    // add reference to stat manager
+    [Header("References")]
+    [SerializeField] private PlayerStatManager playerStats;
 
     void Start()
     {
         canDealDamage = false;
         hasDealtDamage = new List<GameObject>();
+
+        // make sure reference to stat manager is found
+        if (playerStats == null)
+        {
+            playerStats = GetComponentInParent<PlayerStatManager>();
+        }
+
+        if (playerStats == null)
+        {
+            Debug.LogError("DamageDealer couldn't find PlayerStatManager!");
+        }
     }
 
     void Update()
     {
-        if (canDealDamage)
+        if (canDealDamage && playerStats != null)
         {
             RaycastHit hit;
+            float currentRange = playerStats.attackRange.Value;
 
             int layerMask =1 << 9;
-            if (Physics.Raycast(transform.position, -transform.up, out hit, weaponLength, layerMask))
+            if (Physics.Raycast(transform.position, -transform.up, out hit, currentRange, layerMask))
             {
                 GameObject target = hit.transform.gameObject;
 
                 if (!hasDealtDamage.Contains(target))
                 {
-                    print("damage");
                     hasDealtDamage.Add(target);
 
                     Health hp = target.GetComponent<Health>();
                     if (hp != null)
                     {
-                        hp.TakeDamage(weaponDamage);
-                        Debug.Log("Damage: " + weaponDamage);
+                        float currentDamage = playerStats.attackDamage.Value;
+                        hp.TakeDamage(currentDamage);
                     }
                 }
             }
@@ -55,7 +67,11 @@ public class DamageDealer : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        // Gizmos only work when the game is running and playerStats was found
+        // Use fallback value for editor here
+        float debugLength = (playerStats != null) ? playerStats.attackRange.Value : 1.0f;
+
         Gizmos.color = Color.yellow;
-        Gizmos.DrawRay(transform.position, transform.position - transform.up * weaponLength);
-   }
+        Gizmos.DrawRay(transform.position, -transform.up * debugLength);
+    }
 }
