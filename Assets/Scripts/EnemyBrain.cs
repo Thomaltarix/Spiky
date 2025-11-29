@@ -7,7 +7,7 @@ public class EnemyBrain : MonoBehaviour
 {
     [SerializeField] private float _speed = 3f;
     [SerializeField] private float _attackRange = 1f;
-    [SerializeField] private float _attackCooldown = 2f;
+    [SerializeField] private float _attackCooldown = 5f;
 
     private float _attackTimeout;
 
@@ -19,6 +19,8 @@ public class EnemyBrain : MonoBehaviour
     private int _animIDSpeed;
     private int _animIDMotionSpeed;
     private float _animationBlend;
+    private int _animIDAttack;
+    private int _animIDMove;
 
     private const float _speedChangeRate = 10f;
 
@@ -31,6 +33,9 @@ public class EnemyBrain : MonoBehaviour
 
         _animator = GetComponent<Animator>();
         _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
+
+        _animIDAttack = Animator.StringToHash("attack");
+        _animIDMove = Animator.StringToHash("move");
 
         _agent = GetComponent<NavMeshAgent>();
         _agent.speed = _speed;
@@ -94,9 +99,15 @@ public class EnemyBrain : MonoBehaviour
         if (_agent.remainingDistance <= _attackRange && _attackTimeout <= 0) 
         {
             PerformAttack();
+            _animator.SetTrigger(_animIDAttack);
             _attackTimeout = _attackCooldown;
         }
         if (_attackTimeout > 0) { _attackTimeout -= Time.deltaTime; }
         
+    }
+
+   public void OnAttackFinished()
+    {
+        _animator.SetTrigger(_animIDMove);
     }
 }

@@ -93,12 +93,12 @@ namespace StarterAssets
                 stamina = 0f;
             }
 
-            if (!isSprinting)
+            if (stamina > maxStamina * 0.15f)
                 staminaLocked = false;
 
             if (isSprinting && !staminaLocked)
             {
-                stamina -= staminaDrainRate * stat * Time.deltaTime;
+                stamina -= staminaDrainRate * Time.deltaTime;
                 regenTimer = regenDelay;
             }
             else
@@ -106,7 +106,7 @@ namespace StarterAssets
                 if (regenTimer > 0)
                     regenTimer -= Time.deltaTime;
                 else
-                    stamina += staminaRegenRate * stat * Time.deltaTime;
+                    stamina += staminaRegenRate * Time.deltaTime;
             }
 
             stamina = Mathf.Clamp(stamina, 0, maxStamina);

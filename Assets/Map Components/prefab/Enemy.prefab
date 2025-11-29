@@ -522,7 +522,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3
   _attackRange: 1
-  _attackCooldown: 1
+  _attackCooldown: 2
 --- !u!195 &8260165126256944583
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -555,7 +555,7 @@ Animator:
   m_GameObject: {fileID: 1413660231454935962}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: ebf8affbfb4ac7548997f37658ea34d6, type: 3}
-  m_Controller: {fileID: 9100000, guid: 40db3173a05ae3242b1c182a09b0a183, type: 2}
+  m_Controller: {fileID: 9100000, guid: 3a435c0222851a24282b1afdc6e85a76, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
