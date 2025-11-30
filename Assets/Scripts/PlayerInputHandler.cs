@@ -1,3 +1,4 @@
+using UnityEditor.Rendering.Universal;
 using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
@@ -11,15 +12,25 @@ public class PlayerInputHandler : MonoBehaviour
     public bool Sprint { get; private set; }
     public bool AttackPressed { get; private set; }
     public bool ToggleCombatPressed { get; private set; }
+    public bool UpgradeMenuPressed { get; private set; }
 
     [Header("Mouse Cursor Settings")]
     public bool cursorLocked = true;
     public bool cursorInputForLook = true;
 
+    private bool isPaused = false;
+
     private void Update()
     {
         AttackPressed = Input.GetMouseButtonDown(0);
         ToggleCombatPressed = Input.GetKeyDown(KeyCode.C);
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            if (isPaused)
+                ResumeGame();
+            else
+                PauseGame();
+        }
     }
 
     public void ResetJump() => Jump = false;
@@ -74,11 +85,25 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        SetCursorState(cursorLocked);
+        SetCursorState(cursorLocked && !isPaused);
     }
 
     private void SetCursorState(bool newState)
     {
         Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !newState;
+    }
+    private void PauseGame()
+    {
+        isPaused = true;
+        Time.timeScale = 0f;
+        SetCursorState(false);
+    }
+
+    public void ResumeGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1f;
+        SetCursorState(cursorLocked);
     }
 }

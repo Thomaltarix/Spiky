@@ -47,7 +47,7 @@ public class DamageDealer : MonoBehaviour
                     if (hp != null)
                     {
                         float currentDamage = playerStats.attackDamage.Value;
-                        hp.TakeDamage(currentDamage);
+                        hp.TakeDamage(currentDamage, playerStats);
                     }
                 }
             }

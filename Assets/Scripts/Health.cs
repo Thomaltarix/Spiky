@@ -5,7 +5,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private float _health = 100f;
     [SerializeField] private float ragdollDuration = 2f;
-    [SerializeField] private GameObject smokePrefab; // assigner un prefab de particules de fumée
+    [SerializeField] private GameObject smokePrefab; // assigner un prefab de particules de fumï¿½e
 
     private Animator animator;
     private Rigidbody[] ragdollBodies;
@@ -48,7 +48,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, PlayerStatManager playerStats)
     {
         if (isDead) return;
 
@@ -61,6 +61,7 @@ public class Health : MonoBehaviour
         if (_health <= 0f)
         {
             Die();
+            playerStats.IncreaseToken();
         }
         else
         {
@@ -136,7 +137,6 @@ public class Health : MonoBehaviour
         {
             if (rend != null)
             {
-                //rend.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
                 rend.material.color = color;
             }
         }
