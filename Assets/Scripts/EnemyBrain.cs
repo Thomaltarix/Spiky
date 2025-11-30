@@ -3,6 +3,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
+//todo: separate this into multiple scritps (EnemyComnbatController, EnemyAnimationController etc)
+
 public class EnemyBrain : MonoBehaviour
 {
     [SerializeField] private float _speed = 3f;
@@ -28,6 +30,9 @@ public class EnemyBrain : MonoBehaviour
     private int _animIDMove;
 
     private const float _speedChangeRate = 10f;
+
+    public AudioSource audioSource;
+    public AudioClip hurtSound;
 
     private void Start()
     {
@@ -58,6 +63,8 @@ public class EnemyBrain : MonoBehaviour
     {
        //empty
     }
+
+    public void PlaySwordSound() { }
 
     public void PLayMoveAnimation(float rawSpeed) 
     {
