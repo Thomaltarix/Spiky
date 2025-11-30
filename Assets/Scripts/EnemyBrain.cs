@@ -103,7 +103,7 @@ public class EnemyBrain : MonoBehaviour
         
     }
 
-    public void DealDamageEvent()
+    public void StartDealDamage()
     {
         if (_player == null) return;
 
@@ -119,6 +119,9 @@ public class EnemyBrain : MonoBehaviour
             Debug.Log("Missed !");
         }
     }
+
+
+    public void EndDealDamage() { }
 
     public void OnAttackFinished()
     {

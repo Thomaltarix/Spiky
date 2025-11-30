@@ -2267,6 +2267,30 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 1493544230309256861, guid: 8df1801ce65b60a458e7cc96acf06545, type: 3}
+      propertyPath: _health
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493544230309256861, guid: 8df1801ce65b60a458e7cc96acf06545, type: 3}
+      propertyPath: hitColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493544230309256861, guid: 8df1801ce65b60a458e7cc96acf06545, type: 3}
+      propertyPath: hitColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493544230309256861, guid: 8df1801ce65b60a458e7cc96acf06545, type: 3}
+      propertyPath: hitColor.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1493544230309256861, guid: 8df1801ce65b60a458e7cc96acf06545, type: 3}
+      propertyPath: smokePrefab
+      value: 
+      objectReference: {fileID: 1540664639820819098, guid: 5d48e9ca2fd7c3847aed3d2c21e852bf, type: 3}
+    - target: {fileID: 1493544230309256861, guid: 8df1801ce65b60a458e7cc96acf06545, type: 3}
+      propertyPath: ragdollDuration
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1789482460170916128, guid: 8df1801ce65b60a458e7cc96acf06545, type: 3}
       propertyPath: m_LocalPosition.x
       value: -9.003966
