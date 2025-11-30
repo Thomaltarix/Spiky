@@ -108,7 +108,7 @@ public class PlayerStatManager : MonoBehaviour
         float effectiveDamage = Mathf.Max(damage - armor.Value, 0);
         currentHealth -= effectiveDamage;
         hitEffectUI.PlayHitEffect();
-        if (currentHealth < 0)
+        if (currentHealth <= 0)
         {
             currentHealth = 0;
             gameManager.EndGame();
@@ -129,21 +129,23 @@ public class PlayerStatManager : MonoBehaviour
     {
         if (statsDictionary.TryGetValue(statName, out var entry))
         {
+            if (currentTokens < entry.stat.level)
+                return;
+
             entry.stat.level += 1;
-            currentTokens -= entry.stat.level;
             entry.text.text = entry.stat.level.ToString();
+            IncreaseToken(-entry.stat.level);
         }
 
         if (statName == "Health")
         {
             UpdateHealthMaxValue();
         }
-        playerInput.ResumeGame();
     }
 
     public void IncreaseToken(int amount = 1)
     {
-        currentTokens += 1;
+        currentTokens += amount;
         currentTokensText.text = "Tokens: " + currentTokens.ToString();
         armorUpgradeIcon.gameObject.SetActive(armor.level < currentTokens);
         movementSpeedUpgradeIcon.gameObject.SetActive(movementSpeed.level < currentTokens);

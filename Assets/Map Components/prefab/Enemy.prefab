@@ -999,7 +999,6 @@ MonoBehaviour:
   smokePrefab: {fileID: 1540664639820819098, guid: 5d48e9ca2fd7c3847aed3d2c21e852bf, type: 3}
   hitColor: {r: 1, g: 0, b: 0, a: 1}
   audioSource: {fileID: 4080827781685640771}
-  hurtSound: {fileID: 8300000, guid: 2b6a9bb121a0fd34d83b3fb17bf88a18, type: 3}
 --- !u!136 &4630321793138947822
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1015,7 +1014,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2

@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
 
     private bool _restarting = false;
 
+    private bool _upgrading = false;
 
     private void Start()
     {
@@ -72,5 +73,19 @@ public class GameManager : MonoBehaviour
         endScreenUI.SetActive(false);
         playerStatsUI.SetActive(true);
         Time.timeScale = 1f;
+    }
+
+    public void UpgradeScreen()
+    {
+        if (!_upgrading)
+        {
+            PauseGame();
+            _upgrading = true;
+        }
+        else 
+        {
+            StartGame();
+            _upgrading = false;
+        }
     }
 }

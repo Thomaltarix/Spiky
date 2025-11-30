@@ -18,18 +18,17 @@ public class PlayerInputHandler : MonoBehaviour
     public bool cursorLocked = true;
     public bool cursorInputForLook = true;
 
-    private bool isPaused = false;
+
+    public GameManager gameManager;
 
     private void Update()
     {
         AttackPressed = Input.GetMouseButtonDown(0);
         ToggleCombatPressed = Input.GetKeyDown(KeyCode.C);
+
         if (Input.GetKeyDown(KeyCode.U))
         {
-            if (isPaused)
-                ResumeGame();
-            else
-                PauseGame();
+            gameManager.UpgradeScreen();
         }
     }
 
@@ -85,25 +84,12 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnApplicationFocus(bool hasFocus)
     {
-        SetCursorState(cursorLocked && !isPaused);
+        SetCursorState(cursorLocked);
     }
 
     private void SetCursorState(bool newState)
     {
         Cursor.lockState = newState ? CursorLockMode.Locked : CursorLockMode.None;
         Cursor.visible = !newState;
-    }
-    private void PauseGame()
-    {
-        isPaused = true;
-        Time.timeScale = 0f;
-        SetCursorState(false);
-    }
-
-    public void ResumeGame()
-    {
-        isPaused = false;
-        Time.timeScale = 1f;
-        SetCursorState(cursorLocked);
     }
 }
