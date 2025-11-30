@@ -9,6 +9,11 @@ public class EnemyBrain : MonoBehaviour
     [SerializeField] private float _attackRange = 3f;
     [SerializeField] private float _attackCooldown = 5f;
 
+    [SerializeField] private Vector3 attackBoxSize = new Vector3(1f, 10f, 1.5f);
+    [SerializeField] private float attackBoxForwardOffset = 1f;
+    [SerializeField] private float attackBoxHeightOffset = 1.5f;
+    [SerializeField] private LayerMask playerLayer;
+
     private float _attackTimeout;
 
     private GameObject _player;
@@ -105,19 +110,40 @@ public class EnemyBrain : MonoBehaviour
 
     public void StartDealDamage()
     {
-        if (_player == null) return;
+        Vector3 boxCenter =
+            transform.position
+            + transform.forward * attackBoxForwardOffset
+            + transform.up * attackBoxHeightOffset;
 
-        float dist = Vector3.Distance(transform.position, _player.transform.position);
+        Collider[] hits = Physics.OverlapBox(
+            boxCenter,
+            attackBoxSize * 0.5f,
+            transform.rotation,
+            playerLayer
+        );
 
-        if (dist <= _attackRange)
+        foreach (Collider hit in hits)
         {
-            _statManager.TakeDamage(10f);
-            Debug.Log("HIT !");
+            if (hit.CompareTag("Player"))
+            {
+                _statManager.TakeDamage(10f);
+                Debug.Log("HIT BOX !");
+            }
         }
-        else
-        {
-            Debug.Log("Missed !");
-        }
+    }
+
+    // draw attack hitbox
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Vector3 boxCenter =
+            transform.position
+            + transform.forward * attackBoxForwardOffset
+            + transform.up * attackBoxHeightOffset;
+
+        Gizmos.matrix = Matrix4x4.TRS(boxCenter, transform.rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, attackBoxSize);
     }
 
 
