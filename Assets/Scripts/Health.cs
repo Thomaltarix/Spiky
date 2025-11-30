@@ -40,8 +40,14 @@ public class Health : MonoBehaviour
     {
         for (int i = 0; i < flashes; i++)
         {
+            if (isDead)
+                break;
+
             MakeInColor(hitColor);
             yield return new WaitForSeconds(0.1f);
+
+            if (isDead)
+                break;
 
             MakeInColor(originalColor);
             yield return new WaitForSeconds(0.1f);
