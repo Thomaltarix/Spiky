@@ -6,7 +6,7 @@ using UnityEngine.AI;
 public class EnemyBrain : MonoBehaviour
 {
     [SerializeField] private float _speed = 3f;
-    [SerializeField] private float _attackRange = 1f;
+    [SerializeField] private float _attackRange = 3f;
     [SerializeField] private float _attackCooldown = 5f;
 
     private float _attackTimeout;
@@ -62,14 +62,6 @@ public class EnemyBrain : MonoBehaviour
         _animator.SetFloat(_animIDMotionSpeed, 1f);
     }
 
-
-    //TODO: maybe use the damage dealer script ? (make the damage dealer script generic can be used by both player and enemies)
-    //NOTE: use PlayerStatManager now as armor is included there
-    public void PerformAttack() 
-    {
-        _statManager.TakeDamage(10f);
-}
-
     private void RotateTowardsPlayer()
     {
         Vector3 direction = (_player.transform.position - transform.position);
@@ -92,13 +84,18 @@ public class EnemyBrain : MonoBehaviour
         if (_player == null || _agent == null || _animator == null)
             return;
 
-        _agent.SetDestination(_player.transform.position);
+        float stopDistance = 1f;
+
+        Vector3 dir = (_player.transform.position - transform.position).normalized;
+        Vector3 targetPos = _player.transform.position - dir * stopDistance;
+
+        _agent.SetDestination(targetPos);
+
         PLayMoveAnimation(_agent.velocity.magnitude);
         RotateTowardsPlayer();
 
         if (_agent.remainingDistance <= _attackRange && _attackTimeout <= 0) 
         {
-            PerformAttack();
             _animator.SetTrigger(_animIDAttack);
             _attackTimeout = _attackCooldown;
         }
@@ -106,7 +103,24 @@ public class EnemyBrain : MonoBehaviour
         
     }
 
-   public void OnAttackFinished()
+    public void DealDamageEvent()
+    {
+        if (_player == null) return;
+
+        float dist = Vector3.Distance(transform.position, _player.transform.position);
+
+        if (dist <= _attackRange)
+        {
+            _statManager.TakeDamage(10f);
+            Debug.Log("HIT !");
+        }
+        else
+        {
+            Debug.Log("Missed !");
+        }
+    }
+
+    public void OnAttackFinished()
     {
         _animator.SetTrigger(_animIDMove);
     }

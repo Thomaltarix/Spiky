@@ -81,4 +81,7 @@ public class PlayerCombatController : MonoBehaviour
         Debug.Log("finish the attack");
         _attacking = false;
     }
+
+    // keep empty (used for animation)
+    public void DealDamageEvent() { }
 }
