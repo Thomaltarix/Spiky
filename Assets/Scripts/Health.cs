@@ -17,6 +17,8 @@ public class Health : MonoBehaviour
 
     private bool isDead = false;
 
+    public AudioSource audioSource;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -24,6 +26,7 @@ public class Health : MonoBehaviour
         ragdollColliders = GetComponentsInChildren<Collider>();
         renderers = GetComponentsInChildren<Renderer>();
 
+        audioSource.time = 1f;
         DisableRagdoll();
     }
 
@@ -49,7 +52,11 @@ public class Health : MonoBehaviour
     {
         if (isDead) return;
 
+
         _health -= damage;
+
+        audioSource.time = 0.6f;
+        audioSource.Play();
 
         if (_health <= 0f)
         {
@@ -60,7 +67,6 @@ public class Health : MonoBehaviour
         {
             HitFlash();
         }
-           
     }
 
     private void Die()
@@ -131,7 +137,6 @@ public class Health : MonoBehaviour
         {
             if (rend != null)
             {
-                //rend.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
                 rend.material.color = color;
             }
         }

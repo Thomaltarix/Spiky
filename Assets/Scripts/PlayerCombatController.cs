@@ -19,6 +19,11 @@ public class PlayerCombatController : MonoBehaviour
 
     private bool _haveAttacked = false;
 
+    public AudioSource audioSource;
+    public AudioClip swordSound;
+
+   
+
     private void Awake()
     {
         _statManager = GetComponent<PlayerStatManager>();
@@ -61,6 +66,12 @@ public class PlayerCombatController : MonoBehaviour
                 _anim.ReturnToMove();
             }
         }
+    }
+
+
+    public void PlaySwordSound()
+    {
+        audioSource.PlayOneShot(swordSound);
     }
 
     private IEnumerator AttackRoutine()
