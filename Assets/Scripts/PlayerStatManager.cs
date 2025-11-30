@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -39,6 +40,7 @@ public class PlayerStatManager : MonoBehaviour
     // reference for health slider
     [SerializeField] private Slider healthSlider;
 
+    private Dictionary<string, (Stat stat, TextMeshProUGUI text)> statsDictionary;
     private void Awake()
     {
         // intialize health slider
@@ -77,6 +79,20 @@ public class PlayerStatManager : MonoBehaviour
 
         currentTokensText = transform.Find("PlayerStats/Tokens").GetComponent<TextMeshProUGUI>();
         currentTokensText.text = "Tokens: " + currentTokens.ToString();
+
+        // stats dictionary for later use
+
+        statsDictionary =
+            new Dictionary<string, (Stat, TextMeshProUGUI)>
+            {
+                        { "Armor", (armor, armorLevelText) },
+                        { "Movement Speed", (movementSpeed, movementSpeedLevelText) },
+                        { "Sprint Speed", (sprintSpeed, sprintSpeedLevelText) },
+                        { "Stamina", (stamina, staminaLevelText) },
+                        { "Attack Damage", (attackDamage, attackDamageLevelText) },
+                        { "Attack Range", (attackRange, attackRangeLevelText) },
+                        { "Attack Speed", (attackSpeed, attackSpeedLevelText) }
+            };
     }
 
     public void TakeDamage(float damage)
@@ -100,11 +116,19 @@ public class PlayerStatManager : MonoBehaviour
         RefreshTotalHealthUI();
     }
 
-    public void IncreaseLevel(Stat stat, int amount = 1)
+    public void IncreaseLevel(string statName, int amount = 1)
     {
-        stat.level += amount;
-        Debug.Log(stat.statName);
-        if (stat.statName == "Health") { UpdateHealthMaxValue(); }
+        if (statsDictionary.TryGetValue(statName, out var entry))
+        {
+            entry.stat.level += amount;
+            currentTokens -= entry.stat.level;
+            entry.text.text = entry.stat.level.ToString();
+        }
+
+        if (statName == "Health")
+        {
+            UpdateHealthMaxValue();
+        }
     }
 
     public void IncreaseToken(int amount = 1)

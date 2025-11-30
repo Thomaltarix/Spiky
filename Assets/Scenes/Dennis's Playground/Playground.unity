@@ -654,6 +654,7 @@ GameObject:
   - component: {fileID: 159552313}
   - component: {fileID: 159552312}
   - component: {fileID: 159552311}
+  - component: {fileID: 159552314}
   m_Layer: 5
   m_Name: UpgradeArmorIcon
   m_TagString: Untagged
@@ -732,6 +733,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 159552309}
   m_CullTransparentMesh: 1
+--- !u!114 &159552314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 159552309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c1021df98de944eb3de959d86d07f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 6982812147933622151}
+  statName: Armor
 --- !u!1 &186872797
 GameObject:
   m_ObjectHideFlags: 0
@@ -2433,6 +2448,7 @@ GameObject:
   - component: {fileID: 1112294481}
   - component: {fileID: 1112294480}
   - component: {fileID: 1112294479}
+  - component: {fileID: 1112294482}
   m_Layer: 5
   m_Name: UpgradeStaminaIcon
   m_TagString: Untagged
@@ -2511,6 +2527,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1112294477}
   m_CullTransparentMesh: 1
+--- !u!114 &1112294482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1112294477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c1021df98de944eb3de959d86d07f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 6982812147933622151}
+  statName: Stamina
 --- !u!1 &1149649975
 GameObject:
   m_ObjectHideFlags: 0
@@ -2800,6 +2830,7 @@ GameObject:
   - component: {fileID: 1333529362}
   - component: {fileID: 1333529361}
   - component: {fileID: 1333529360}
+  - component: {fileID: 1333529363}
   m_Layer: 5
   m_Name: UpgradeAttackDamageIcon
   m_TagString: Untagged
@@ -2878,6 +2909,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1333529358}
   m_CullTransparentMesh: 1
+--- !u!114 &1333529363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333529358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c1021df98de944eb3de959d86d07f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 6982812147933622151}
+  statName: Attack Damage
 --- !u!1 &1334651134
 GameObject:
   m_ObjectHideFlags: 0
@@ -3135,6 +3180,7 @@ GameObject:
   - component: {fileID: 1427513418}
   - component: {fileID: 1427513417}
   - component: {fileID: 1427513416}
+  - component: {fileID: 1427513419}
   m_Layer: 5
   m_Name: UpgradeAttackSpeedIcon
   m_TagString: Untagged
@@ -3213,6 +3259,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1427513414}
   m_CullTransparentMesh: 1
+--- !u!114 &1427513419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1427513414}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c1021df98de944eb3de959d86d07f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 6982812147933622151}
+  statName: Attack Speed
 --- !u!1 &1445009750
 GameObject:
   m_ObjectHideFlags: 0
@@ -3225,6 +3285,7 @@ GameObject:
   - component: {fileID: 1445009754}
   - component: {fileID: 1445009753}
   - component: {fileID: 1445009752}
+  - component: {fileID: 1445009755}
   m_Layer: 5
   m_Name: UpgradeAttackRangeIcon
   m_TagString: Untagged
@@ -3303,6 +3364,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1445009750}
   m_CullTransparentMesh: 1
+--- !u!114 &1445009755
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445009750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c1021df98de944eb3de959d86d07f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 6982812147933622151}
+  statName: Attack Range
 --- !u!1 &1468143924
 GameObject:
   m_ObjectHideFlags: 0
@@ -4311,6 +4386,7 @@ GameObject:
   - component: {fileID: 1866046902}
   - component: {fileID: 1866046901}
   - component: {fileID: 1866046900}
+  - component: {fileID: 1866046903}
   m_Layer: 5
   m_Name: UpgradeMovementSpeedIcon
   m_TagString: Untagged
@@ -4389,6 +4465,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1866046898}
   m_CullTransparentMesh: 1
+--- !u!114 &1866046903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866046898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c1021df98de944eb3de959d86d07f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 6982812147933622151}
+  statName: Movement Speed
 --- !u!1 &1907225510
 GameObject:
   m_ObjectHideFlags: 0
@@ -4437,6 +4527,7 @@ GameObject:
   - component: {fileID: 1914494428}
   - component: {fileID: 1914494427}
   - component: {fileID: 1914494426}
+  - component: {fileID: 1914494429}
   m_Layer: 5
   m_Name: UpgradeSprintSpeedIcon
   m_TagString: Untagged
@@ -4515,6 +4606,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1914494424}
   m_CullTransparentMesh: 1
+--- !u!114 &1914494429
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1914494424}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7c1021df98de944eb3de959d86d07f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 6982812147933622151}
+  statName: Sprint Speed
 --- !u!1 &2064568438
 GameObject:
   m_ObjectHideFlags: 0
