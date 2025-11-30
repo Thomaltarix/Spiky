@@ -37,6 +37,9 @@ public class PlayerStatManager : MonoBehaviour
     [SerializeField] private Image attackRangeUpgradeIcon;
     [SerializeField] private Image attackSpeedUpgradeIcon;
 
+    // reference to handle player input
+    [SerializeField] private PlayerInputHandler playerInput;
+
     // reference for health slider
     [SerializeField] private Slider healthSlider;
 
@@ -85,13 +88,13 @@ public class PlayerStatManager : MonoBehaviour
         statsDictionary =
             new Dictionary<string, (Stat, TextMeshProUGUI)>
             {
-                        { "Armor", (armor, armorLevelText) },
-                        { "Movement Speed", (movementSpeed, movementSpeedLevelText) },
-                        { "Sprint Speed", (sprintSpeed, sprintSpeedLevelText) },
-                        { "Stamina", (stamina, staminaLevelText) },
-                        { "Attack Damage", (attackDamage, attackDamageLevelText) },
-                        { "Attack Range", (attackRange, attackRangeLevelText) },
-                        { "Attack Speed", (attackSpeed, attackSpeedLevelText) }
+                { "Armor", (armor, armorLevelText) },
+                { "Movement Speed", (movementSpeed, movementSpeedLevelText) },
+                { "Sprint Speed", (sprintSpeed, sprintSpeedLevelText) },
+                { "Stamina", (stamina, staminaLevelText) },
+                { "Attack Damage", (attackDamage, attackDamageLevelText) },
+                { "Attack Range", (attackRange, attackRangeLevelText) },
+                { "Attack Speed", (attackSpeed, attackSpeedLevelText) }
             };
     }
 
@@ -116,11 +119,11 @@ public class PlayerStatManager : MonoBehaviour
         RefreshTotalHealthUI();
     }
 
-    public void IncreaseLevel(string statName, int amount = 1)
+    public void IncreaseLevel(string statName)
     {
         if (statsDictionary.TryGetValue(statName, out var entry))
         {
-            entry.stat.level += amount;
+            entry.stat.level += 1;
             currentTokens -= entry.stat.level;
             entry.text.text = entry.stat.level.ToString();
         }
@@ -129,6 +132,7 @@ public class PlayerStatManager : MonoBehaviour
         {
             UpdateHealthMaxValue();
         }
+        playerInput.ResumeGame();
     }
 
     public void IncreaseToken(int amount = 1)
