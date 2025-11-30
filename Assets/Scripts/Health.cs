@@ -23,14 +23,17 @@ public class Health : MonoBehaviour
         DisableRagdoll();
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, PlayerStatManager playerStats)
     {
         if (isDead) return;
 
         _health -= damage;
 
         if (_health <= 0f)
+        {
             Die();
+            playerStats.IncreaseToken();
+        }
     }
 
     private void Die()

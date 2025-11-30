@@ -14,6 +14,7 @@ public class PlayerStatManager : MonoBehaviour
     public Stat attackRange = new Stat { statName = "Attack Range", level = 0, baseValue = 5f, addValue = 1f };
     public Stat attackSpeed = new Stat { statName = "Attack Speed", level = 0, baseValue = 1f, addValue = 0.2f };
     public float currentHealth = 0;
+    public int currentTokens = 0;
 
     // references for values and levels to display in UI
     [SerializeField] private TextMeshProUGUI healthAmountText;
@@ -24,6 +25,7 @@ public class PlayerStatManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI attackDamageLevelText;
     [SerializeField] private TextMeshProUGUI attackRangeLevelText;
     [SerializeField] private TextMeshProUGUI attackSpeedLevelText;
+    [SerializeField] private TextMeshProUGUI currentTokensText;
 
     // reference for health slider
     [SerializeField] private Slider healthSlider;
@@ -63,6 +65,9 @@ public class PlayerStatManager : MonoBehaviour
 
         attackSpeedLevelText = transform.Find("PlayerStats/Combat/AttackSpeed/AttackSpeedIcon/AttackSpeedLevelText").GetComponent<TextMeshProUGUI>();
         attackSpeedLevelText.text = attackSpeed.level.ToString();
+
+        currentTokensText = transform.Find("PlayerStats/Tokens").GetComponent<TextMeshProUGUI>();
+        currentTokensText.text = "Tokens: " + currentTokens.ToString();
     }
 
     public void TakeDamage(float damage)
@@ -91,6 +96,12 @@ public class PlayerStatManager : MonoBehaviour
         stat.level += amount;
         Debug.Log(stat.statName);
         if (stat.statName == "Health") { UpdateHealthMaxValue(); }
+    }
+
+    public void IncreaseToken(int amount = 1)
+    {
+        currentTokens += 1;
+        currentTokensText.text = "Tokens: " + currentTokens.ToString();
     }
 
     private void RefreshTotalHealthUI()
