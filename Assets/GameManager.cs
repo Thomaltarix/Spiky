@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject titleScreenUI;
     public GameObject endScreenUI;
+    public GameObject playerStatsUI;
 
     private static GameManager instance;
 
@@ -25,6 +26,7 @@ public class GameManager : MonoBehaviour
         {
             titleScreenUI.SetActive(true);
             endScreenUI.SetActive(false);
+            playerStatsUI.SetActive(false);
         }
     }
 
@@ -32,8 +34,7 @@ public class GameManager : MonoBehaviour
     {
         if (instance != null)
         {
-            Destroy(gameObject);
-            return;
+            _restarting = instance._restarting;
         }
 
         instance = this;
@@ -51,11 +52,12 @@ public class GameManager : MonoBehaviour
     {
         PauseGame();
         endScreenUI.SetActive(true);
+        playerStatsUI.SetActive(false);
     }
 
     public void RestartGame()
     {
-        _restarting = true;
+        instance._restarting = true;
         Time.timeScale = 1f;
 
         Scene currentScene = SceneManager.GetActiveScene();
@@ -68,6 +70,7 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         titleScreenUI.SetActive(false);
         endScreenUI.SetActive(false);
+        playerStatsUI.SetActive(true);
         Time.timeScale = 1f;
     }
 }

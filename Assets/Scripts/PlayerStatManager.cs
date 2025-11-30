@@ -9,13 +9,16 @@ public class PlayerStatManager : MonoBehaviour
     public Stat maxHealth = new Stat { statName = "Health", level = 0, baseValue = 100f, addValue = 25f };
     public Stat armor = new Stat { statName = "Armor", level = 0, baseValue = 0f, addValue = 5f };
     public Stat movementSpeed = new Stat { statName = "Movement Speed", level = 0, baseValue = 2f, addValue = 0.5f };
-    public Stat sprintSpeed = new Stat { statName = "Sprint Speed", level = 0, baseValue = 10f, addValue = 0.5f };
+    public Stat sprintSpeed = new Stat { statName = "Sprint Speed", level = 0, baseValue = 5f, addValue = 0.5f };
     public Stat stamina = new Stat { statName = "Stamina", level = 0, baseValue = 5f, addValue = 0.5f };
     public Stat attackDamage = new Stat { statName = "Attack Damage", level = 0, baseValue = 50f, addValue = 5f };
     public Stat attackRange = new Stat { statName = "Attack Range", level = 0, baseValue = 5f, addValue = 1f };
     public Stat attackSpeed = new Stat { statName = "Attack Speed", level = 0, baseValue = 1f, addValue = 0.2f };
     public float currentHealth = 0;
     public int currentTokens = 0;
+
+    [SerializeField] private GameManager gameManager;
+    [SerializeField] private HitEffectUI hitEffectUI;
 
     // references for values and levels to display in UI
     [SerializeField] private TextMeshProUGUI healthAmountText;
@@ -83,6 +86,8 @@ public class PlayerStatManager : MonoBehaviour
         currentTokensText = transform.Find("PlayerStats/Tokens").GetComponent<TextMeshProUGUI>();
         currentTokensText.text = "Tokens: " + currentTokens.ToString();
 
+        hitEffectUI = GetComponent<HitEffectUI>();
+
         // stats dictionary for later use
 
         statsDictionary =
@@ -102,10 +107,11 @@ public class PlayerStatManager : MonoBehaviour
     {
         float effectiveDamage = Mathf.Max(damage - armor.Value, 0);
         currentHealth -= effectiveDamage;
+        hitEffectUI.PlayHitEffect();
         if (currentHealth < 0)
         {
             currentHealth = 0;
-            // TODO: die logic
+            gameManager.EndGame();
         }
         RefreshTotalHealthUI();
     }

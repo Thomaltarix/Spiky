@@ -5,7 +5,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField]
     private GameObject enemyPrefab;
 
-    private const float _timerCooldown = 2f;
+    [SerializeField] private const float _timerCooldown = 2f;
     private float _timer;
 
     public int EnemyCount { get; private set; } = 0;
