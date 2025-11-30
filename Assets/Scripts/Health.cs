@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Health : MonoBehaviour
@@ -11,6 +12,9 @@ public class Health : MonoBehaviour
     private Collider[] ragdollColliders;
     private Renderer[] renderers;
 
+    [SerializeField] private Color hitColor = Color.red;
+    private Color originalColor = Color.white;
+
     private bool isDead = false;
 
     void Start()
@@ -23,6 +27,24 @@ public class Health : MonoBehaviour
         DisableRagdoll();
     }
 
+
+    public void HitFlash()
+    {
+        StartCoroutine(FlashRoutine(2));
+    }
+
+    private IEnumerator FlashRoutine(int flashes)
+    {
+        for (int i = 0; i < flashes; i++)
+        {
+            MakeInColor(hitColor);
+            yield return new WaitForSeconds(0.1f);
+
+            MakeInColor(originalColor);
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
     public void TakeDamage(float damage)
     {
         if (isDead) return;
@@ -31,6 +53,8 @@ public class Health : MonoBehaviour
 
         if (_health <= 0f)
             Die();
+        else
+            HitFlash();
     }
 
     private void Die()
@@ -42,7 +66,7 @@ public class Health : MonoBehaviour
 
         EnableRagdoll();
 
-        MakeWhite();
+        MakeInColor(Color.black);
 
         DeadParticles();
 
@@ -54,7 +78,7 @@ public class Health : MonoBehaviour
     {
         if (smokePrefab != null)
         {
-            GameObject smoke = Instantiate(smokePrefab, transform.position, Quaternion.identity);
+            GameObject smoke = Instantiate(smokePrefab, transform.position, smokePrefab.transform.rotation);
             ParticleSystem ps = smoke.GetComponent<ParticleSystem>();
             Destroy(smoke, 2f);
            
@@ -83,7 +107,7 @@ public class Health : MonoBehaviour
             rb.mass = 1f;
         }
     }
-
+    
     private void DisableRagdoll()
     {
         foreach (var rb in ragdollBodies)
@@ -96,14 +120,14 @@ public class Health : MonoBehaviour
         }
     }
 
-    private void MakeWhite()
+    private void MakeInColor(Color color)
     {
         foreach (var rend in renderers)
         {
             if (rend != null)
             {
-                rend.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
-                rend.material.color = Color.black;
+                //rend.material = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+                rend.material.color = color;
             }
         }
     }
