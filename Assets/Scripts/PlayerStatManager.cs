@@ -27,6 +27,15 @@ public class PlayerStatManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI attackSpeedLevelText;
     [SerializeField] private TextMeshProUGUI currentTokensText;
 
+    // references to upgrade icons
+    [SerializeField] private Image armorUpgradeIcon;
+    [SerializeField] private Image movementSpeedUpgradeIcon;
+    [SerializeField] private Image sprintSpeedUpgradeIcon;
+    [SerializeField] private Image staminaUpgradeIcon;
+    [SerializeField] private Image attackDamageUpgradeIcon;
+    [SerializeField] private Image attackRangeUpgradeIcon;
+    [SerializeField] private Image attackSpeedUpgradeIcon;
+
     // reference for health slider
     [SerializeField] private Slider healthSlider;
 
@@ -102,6 +111,13 @@ public class PlayerStatManager : MonoBehaviour
     {
         currentTokens += 1;
         currentTokensText.text = "Tokens: " + currentTokens.ToString();
+        armorUpgradeIcon.gameObject.SetActive(armor.level < currentTokens);
+        movementSpeedUpgradeIcon.gameObject.SetActive(movementSpeed.level < currentTokens);
+        sprintSpeedUpgradeIcon.gameObject.SetActive(sprintSpeed.level < currentTokens);
+        staminaUpgradeIcon.gameObject.SetActive(stamina.level < currentTokens);
+        attackDamageUpgradeIcon.gameObject.SetActive(attackDamage.level < currentTokens);
+        attackRangeUpgradeIcon.gameObject.SetActive(attackRange.level < currentTokens);
+        attackSpeedUpgradeIcon.gameObject.SetActive(attackSpeed.level < currentTokens);
     }
 
     private void RefreshTotalHealthUI()

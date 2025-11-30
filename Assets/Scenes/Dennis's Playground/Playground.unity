@@ -660,7 +660,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &159552310
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2439,7 +2439,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1112294478
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2806,7 +2806,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1333529359
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3141,7 +3141,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1427513415
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3231,7 +3231,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1445009751
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4317,7 +4317,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1866046899
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4443,7 +4443,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1914494425
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6865,40 +6865,41 @@ MonoBehaviour:
     addValue: 25
   armor:
     statName: Armor
-    level: 0
+    level: 1
     baseValue: 0
     addValue: 5
   movementSpeed:
     statName: Movement Speed
-    level: 0
+    level: 2
     baseValue: 2
     addValue: 0.5
   sprintSpeed:
     statName: Sprint Speed
-    level: 0
+    level: 3
     baseValue: 20
     addValue: 0.5
   stamina:
     statName: Stamina
-    level: 9
+    level: 4
     baseValue: 1
     addValue: 0.2
   attackDamage:
     statName: Attack Damage
-    level: 0
+    level: 5
     baseValue: 50
     addValue: 5
   attackRange:
     statName: Attack Range
-    level: 0
+    level: 6
     baseValue: 5
     addValue: 1
   attackSpeed:
     statName: Attack Speed
-    level: 0
+    level: 7
     baseValue: 1
     addValue: 0.2
   currentHealth: 0
+  currentTokens: 0
   healthAmountText: {fileID: 0}
   armorLevelText: {fileID: 0}
   movementSpeedLevelText: {fileID: 0}
@@ -6907,6 +6908,14 @@ MonoBehaviour:
   attackDamageLevelText: {fileID: 0}
   attackRangeLevelText: {fileID: 0}
   attackSpeedLevelText: {fileID: 0}
+  currentTokensText: {fileID: 0}
+  armorUpgradeIcon: {fileID: 159552312}
+  movementSpeedUpgradeIcon: {fileID: 1866046901}
+  sprintSpeedUpgradeIcon: {fileID: 1914494427}
+  staminaUpgradeIcon: {fileID: 1112294480}
+  attackDamageUpgradeIcon: {fileID: 1333529361}
+  attackRangeUpgradeIcon: {fileID: 1445009753}
+  attackSpeedUpgradeIcon: {fileID: 1427513417}
   healthSlider: {fileID: 0}
 --- !u!114 &6982812147933622152
 MonoBehaviour:
