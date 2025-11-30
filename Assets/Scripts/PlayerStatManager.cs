@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ public class PlayerStatManager : MonoBehaviour
     public Stat attackRange = new Stat { statName = "Attack Range", level = 0, baseValue = 5f, addValue = 1f };
     public Stat attackSpeed = new Stat { statName = "Attack Speed", level = 0, baseValue = 1f, addValue = 0.2f };
     public float currentHealth = 0;
+    public int currentTokens = 0;
 
     // references for values and levels to display in UI
     [SerializeField] private TextMeshProUGUI healthAmountText;
@@ -24,10 +26,24 @@ public class PlayerStatManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI attackDamageLevelText;
     [SerializeField] private TextMeshProUGUI attackRangeLevelText;
     [SerializeField] private TextMeshProUGUI attackSpeedLevelText;
+    [SerializeField] private TextMeshProUGUI currentTokensText;
+
+    // references to upgrade icons
+    [SerializeField] private Image armorUpgradeIcon;
+    [SerializeField] private Image movementSpeedUpgradeIcon;
+    [SerializeField] private Image sprintSpeedUpgradeIcon;
+    [SerializeField] private Image staminaUpgradeIcon;
+    [SerializeField] private Image attackDamageUpgradeIcon;
+    [SerializeField] private Image attackRangeUpgradeIcon;
+    [SerializeField] private Image attackSpeedUpgradeIcon;
+
+    // reference to handle player input
+    [SerializeField] private PlayerInputHandler playerInput;
 
     // reference for health slider
     [SerializeField] private Slider healthSlider;
 
+    private Dictionary<string, (Stat stat, TextMeshProUGUI text)> statsDictionary;
     private void Awake()
     {
         // intialize health slider
@@ -63,6 +79,23 @@ public class PlayerStatManager : MonoBehaviour
 
         attackSpeedLevelText = transform.Find("PlayerStats/Combat/AttackSpeed/AttackSpeedIcon/AttackSpeedLevelText").GetComponent<TextMeshProUGUI>();
         attackSpeedLevelText.text = attackSpeed.level.ToString();
+
+        currentTokensText = transform.Find("PlayerStats/Tokens").GetComponent<TextMeshProUGUI>();
+        currentTokensText.text = "Tokens: " + currentTokens.ToString();
+
+        // stats dictionary for later use
+
+        statsDictionary =
+            new Dictionary<string, (Stat, TextMeshProUGUI)>
+            {
+                { "Armor", (armor, armorLevelText) },
+                { "Movement Speed", (movementSpeed, movementSpeedLevelText) },
+                { "Sprint Speed", (sprintSpeed, sprintSpeedLevelText) },
+                { "Stamina", (stamina, staminaLevelText) },
+                { "Attack Damage", (attackDamage, attackDamageLevelText) },
+                { "Attack Range", (attackRange, attackRangeLevelText) },
+                { "Attack Speed", (attackSpeed, attackSpeedLevelText) }
+            };
     }
 
     public void TakeDamage(float damage)
@@ -86,11 +119,33 @@ public class PlayerStatManager : MonoBehaviour
         RefreshTotalHealthUI();
     }
 
-    public void IncreaseLevel(Stat stat, int amount = 1)
+    public void IncreaseLevel(string statName)
     {
-        stat.level += amount;
-        Debug.Log(stat.statName);
-        if (stat.statName == "Health") { UpdateHealthMaxValue(); }
+        if (statsDictionary.TryGetValue(statName, out var entry))
+        {
+            entry.stat.level += 1;
+            currentTokens -= entry.stat.level;
+            entry.text.text = entry.stat.level.ToString();
+        }
+
+        if (statName == "Health")
+        {
+            UpdateHealthMaxValue();
+        }
+        playerInput.ResumeGame();
+    }
+
+    public void IncreaseToken(int amount = 1)
+    {
+        currentTokens += 1;
+        currentTokensText.text = "Tokens: " + currentTokens.ToString();
+        armorUpgradeIcon.gameObject.SetActive(armor.level < currentTokens);
+        movementSpeedUpgradeIcon.gameObject.SetActive(movementSpeed.level < currentTokens);
+        sprintSpeedUpgradeIcon.gameObject.SetActive(sprintSpeed.level < currentTokens);
+        staminaUpgradeIcon.gameObject.SetActive(stamina.level < currentTokens);
+        attackDamageUpgradeIcon.gameObject.SetActive(attackDamage.level < currentTokens);
+        attackRangeUpgradeIcon.gameObject.SetActive(attackRange.level < currentTokens);
+        attackSpeedUpgradeIcon.gameObject.SetActive(attackSpeed.level < currentTokens);
     }
 
     private void RefreshTotalHealthUI()

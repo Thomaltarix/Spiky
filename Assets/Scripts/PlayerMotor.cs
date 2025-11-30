@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace StarterAssets
 {
@@ -22,6 +23,7 @@ namespace StarterAssets
         public float regenDelay = 0.8f;           // délai avant la régénération
 
         private float stamina;
+        public Image staminaBarImage;
         private float regenTimer;
         private bool staminaLocked = false;
 
@@ -110,6 +112,8 @@ namespace StarterAssets
             }
 
             stamina = Mathf.Clamp(stamina, 0, maxStamina);
+            float fillValue = 1f - (stamina / (_statManager.stamina.Value * staminaMaxMultiplier));
+            staminaBarImage.fillAmount = fillValue;
         }
 
         private void Move()
