@@ -68,8 +68,7 @@ public class Health : MonoBehaviour
 
         MakeInColor(Color.black);
 
-        DeadParticles();
-
+        Invoke(nameof(DeadParticles), ragdollDuration);
         Invoke(nameof(DestroySelf), ragdollDuration);
     }
 
