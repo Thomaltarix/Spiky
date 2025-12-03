@@ -129,7 +129,7 @@ public class PlayerStatManager : MonoBehaviour
     {
         if (statsDictionary.TryGetValue(statName, out var entry))
         {
-            if (currentTokens < entry.stat.level)
+            if (currentTokens <= entry.stat.level)
                 return;
 
             entry.stat.level += 1;
