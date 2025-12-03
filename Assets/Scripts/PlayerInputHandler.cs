@@ -23,6 +23,19 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void Update()
     {
+        if (gameManager.IsPaused)
+        {
+            AttackPressed = false;
+            ToggleCombatPressed = false;
+
+            if (Input.GetKeyDown(KeyCode.U))
+            {
+                gameManager.UpgradeScreen();
+            }
+
+            return;
+        }
+
         AttackPressed = Input.GetMouseButtonDown(0);
         ToggleCombatPressed = Input.GetKeyDown(KeyCode.C);
 
@@ -31,6 +44,7 @@ public class PlayerInputHandler : MonoBehaviour
             gameManager.UpgradeScreen();
         }
     }
+
 
     public void ResetJump() => Jump = false;
 
@@ -42,6 +56,12 @@ public class PlayerInputHandler : MonoBehaviour
 
     public void OnLook(InputValue value)
     {
+        if (gameManager.IsPaused)
+        {
+            Look = Vector2.zero; // prevent dragging after resuming game
+            return;
+        }
+
         if (cursorInputForLook)
         {
             LookInput(value.Get<Vector2>());

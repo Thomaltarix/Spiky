@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     private bool _upgrading = false;
 
+    public bool IsPaused { get; private set; } = false;
+
     private void Start()
     {
         PauseGame();
@@ -44,6 +46,7 @@ public class GameManager : MonoBehaviour
 
     private void PauseGame()
     {
+        IsPaused = true;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         Time.timeScale = 0f;
@@ -67,6 +70,7 @@ public class GameManager : MonoBehaviour
 
     public void StartGame()
     {
+        IsPaused = false;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
         titleScreenUI.SetActive(false);
