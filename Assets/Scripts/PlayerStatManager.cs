@@ -84,7 +84,7 @@ public class PlayerStatManager : MonoBehaviour
         attackSpeedLevelText.text = attackSpeed.level.ToString();
 
         currentTokensText = transform.Find("PlayerStats/Tokens").GetComponent<TextMeshProUGUI>();
-        currentTokensText.text = "Tokens: " + currentTokens.ToString();
+        currentTokensText.text = "Tokens:\n" + currentTokens.ToString();
 
         hitEffectUI = GetComponent<HitEffectUI>();
 
@@ -146,7 +146,7 @@ public class PlayerStatManager : MonoBehaviour
     public void IncreaseToken(int amount = 1)
     {
         currentTokens += amount;
-        currentTokensText.text = "Tokens: " + currentTokens.ToString();
+        currentTokensText.text = "Tokens:\n" + currentTokens.ToString();
         armorUpgradeIcon.gameObject.SetActive(armor.level < currentTokens);
         movementSpeedUpgradeIcon.gameObject.SetActive(movementSpeed.level < currentTokens);
         sprintSpeedUpgradeIcon.gameObject.SetActive(sprintSpeed.level < currentTokens);
