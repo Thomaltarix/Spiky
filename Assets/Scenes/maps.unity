@@ -3374,10 +3374,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5649441307245943570, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135133888432195244, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135133888432195244, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135133888432195244, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7135133888432195244, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135133888432195244, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -1322.513
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135133888432195244, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: -793.358
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135133888432195244, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -33
+      objectReference: {fileID: 0}
+    - target: {fileID: 7135133888432195244, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 93
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 2313016077135445325, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 5649441307245943570, guid: 1f618c2f0b7c2674c92b0e0f683cb974, type: 3}
